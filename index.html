@@ -13,8 +13,12 @@
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <link href="assets/vendor/ionicons/css/ionicons.min.css" rel="stylesheet">
   <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -22,10 +26,15 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/theme.css" rel="stylesheet">
 
 </head>
 
 <body id="page-top">
+  <!-- Theme Toggle Button -->
+  <div class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+    <i class="fa fa-moon-o" id="theme-icon"></i>
+  </div>
 
   <!-- ======= Header/ Navbar ======= -->
   <nav class="navbar navbar-b navbar-trans navbar-expand-md fixed-top" id="mainNav">
@@ -62,16 +71,31 @@
   <!-- ======= Intro Section ======= -->
   <div id="home" class="intro route bg-image" style="background-image: url(assets/img/code-wallpaper.jpg)">
     <div class="overlay-itro"></div>
+    <div class="particles-js" id="particles-js"></div>
     <div class="intro-content display-table">
       <div class="table-cell">
         <div class="container">
-          <!--<p class="display-6 color-d">Hello, world!</p>-->
-          <h1 class="intro-title mb-4">I'm Michael Stevan Lapandio</h1>
-          <p class="intro-subtitle"><span class="text-slider-items">Software Engineer, Basketball Athlete ,Web
-              Developer, Data Enthusiast</span><strong class="text-slider"></strong></p>
-          <!-- <p class="pt-3"><a class="btn btn-primary btn js-scroll px-4" href="#about" role="button">Learn More</a></p> -->
+          <div class="animated-intro">
+            <div class="intro-greeting">Hello, I'm</div>
+            <h1 class="intro-title mb-4">Michael Stevan Lapandio</h1>
+            <div class="intro-subtitle-wrapper">
+              <span class="intro-subtitle-label">I'm a </span>
+              <p class="intro-subtitle"><span class="text-slider-items">Software Engineer, Web3 Enthusiast, AI Enthusiast, Basketball Player</span><strong class="text-slider"></strong></p>
+            </div>
+            <div class="intro-buttons mt-4">
+              <a href="#about" class="btn-intro js-scroll">About Me</a>
+              <a href="#work" class="btn-intro btn-outline js-scroll">My Work</a>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+    <div class="scroll-down">
+      <a href="#about" class="js-scroll">
+        <span></span>
+        <span></span>
+        <span></span>
+      </a>
     </div>
   </div><!-- End Intro Section -->
 
@@ -80,56 +104,90 @@
     <!-- ======= About Section ======= -->
     <section id="about" class="about-mf sect-pt4 route">
       <div class="container">
+        <div class="section-title">
+          <h2>About Me</h2>
+          <div class="section-line"></div>
+        </div>
+        
         <div class="row">
           <div class="col-sm-12">
-            <div class="box-shadow-full">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="row">
-                    <div class="col-sm-6 col-md-5">
-                      <div class="about-img">
-                        <img src="assets/img/wallpaper-portfolio.jpg" class="img-fluid rounded b-shadow-a" alt="">
+            <div class="about-wrapper">
+              <div class="row align-items-center">
+                <!-- Left Column - Profile Image and Info -->
+                <div class="col-lg-5">
+                  <div class="about-profile">
+                    <div class="profile-img-container">
+                      <img src="assets/img/wallpaper-portfolio.jpg" class="profile-img" alt="Michael Stevan Lapandio">
+                      <div class="img-overlay"></div>
+                    </div>
+                    
+                    <div class="profile-info">
+                      <div class="info-card">
+                        <div class="info-item">
+                          <div class="info-icon"><i class="bi bi-person"></i></div>
+                          <div class="info-content">
+                            <h5>Name</h5>
+                            <p>Michael Stevan Lapandio</p>
+                          </div>
+                        </div>
+                        
+                        <div class="info-item">
+                          <div class="info-icon"><i class="bi bi-calendar"></i></div>
+                          <div class="info-content">
+                            <h5>Birthday</h5>
+                            <p>13 May 1994</p>
+                          </div>
+                        </div>
+                        
+                        <div class="info-item">
+                          <div class="info-icon"><i class="bi bi-briefcase"></i></div>
+                          <div class="info-content">
+                            <h5>Profile</h5>
+                            <p>Software Engineer</p>
+                          </div>
+                        </div>
+                        
+                        <div class="info-item">
+                          <div class="info-icon"><i class="bi bi-envelope"></i></div>
+                          <div class="info-content">
+                            <h5>Email</h5>
+                            <p>michaellapandio04@gmail.com</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-sm-6 col-md-7">
-                      <div class="about-info">
-                        <p><span class="title-s">Name: </span> <span>Michael Stevan Lapandio</span></p>
-                        <p><span class="title-s">Birthday: </span> <span>13 May 1994</span></p>
-                        <p><span class="title-s">Profile: </span> <span>Software Engineer</span></p>
-                        <p><span class="title-s">Email: </span> <span>michaellapandio04@gmail.com</span></p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="skill-mf">
-                    <p class="title-s">Skill</p>
-                    <span>JAVASCRIPT</span> <br>
-                    <span>HTML/CSS</span> <br>
-                    <span>GO</span> <br>
-                    <span>NODE-JS</span> <br>
-                    <span>PYTHON</span> <br>
-                    <span>GIT</span> <br>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="about-me pt-4 pt-md-0">
-                    <div class="title-box-2">
-                      <h5 class="title-left">
-                        About me
-                      </h5>
+                
+                <!-- Right Column - Bio and Skills -->
+                <div class="col-lg-7">
+                  <div class="about-content">
+                    <div class="about-text">
+                      <p>
+                        As a seasoned Software Engineer with over three years of experience in the ICT industry, I have honed my skills in both front-end and back-end development, specializing in technologies such as ReactJS, NodeJS, and Golang. My tenure at Xapiens Teknologi Indonesia has been marked by significant achievements, including the development of a digital approval process that reduced manual intervention by 70%, showcasing my ability to drive efficiency and innovation.
+                      </p>
+                      <p>
+                        I hold a Bachelor of Engineering in Informatics from Atma Jaya Yogyakarta University and have furthered my expertise through bootcamps and certifications, including courses in Go and identity and access engineering. My diverse skill set includes proficiency in languages such as Go, Javascript, Python, and Rust, and technologies like Kubernetes, Docker, and SQL databases.
+                      </p>
+                      <p>
+                        I am committed to leveraging my technical skills and leadership experience to drive impactful projects and mentor future tech talent. Let's connect to explore opportunities for collaboration and innovation in the tech industry.
+                      </p>
+                      <p>
+                        My hobby is playing basketball. I love to talk, discuss and sharing with other people about anything I know. Adapting and learning new things is challenging for me as long it's not bad thing, I will do it.
+                      </p>
                     </div>
-                    <p class="lead">
-                      I'm bachelor of informatics engineering at Atma Jaya Yogyakarta University.
-                      I am an alumni of the Glints academy with specialization taken that is back-end developer. In the
-                      future I want to be a Software Engineer and can open a start up.
-                    </p>
-                    <p class="lead">
-                      My hobby is playing basketball. I love to talk, discuss and sharing with other people about
-                      anything I know.
-                      Adapting and learning new things is challenging for me as long it's not bad thing, I will do it.
-                    </p>
-                    <p class="lead">
-                      Thanks!
-                    </p>
+                    
+                    <div class="skills-section">
+                      <h3>My Skills</h3>
+                      <div class="skills-container">
+                        <div class="skill-tag">JAVASCRIPT</div>
+                        <div class="skill-tag">HTML/CSS</div>
+                        <div class="skill-tag">GO</div>
+                        <div class="skill-tag">NODE-JS</div>
+                        <div class="skill-tag">PYTHON</div>
+                        <div class="skill-tag">GIT</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -139,97 +197,183 @@
       </div>
     </section><!-- End About Section -->
 
-    <!-- ======= Services Section ======= -->
-    <section id="resume" class="services-mf pt-5 route">
+    <!-- ======= Resume Section ======= -->
+    <section id="resume" class="resume-section sect-pt4 route">
       <div class="container">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="title-box text-center">
-              <h3 class="title-a">
-                Resume
-              </h3>
-              <div class="line-mf"></div>
-            </div>
-          </div>
+        <div class="section-title">
+          <h2>Resume</h2>
+          <div class="section-line"></div>
         </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="box-shadow-full">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="title-box-2">
-                    <h3 class="text-center">
-                      Education
-                    </h3>
-                    <div class="line-mf"></div>
-                  </div>
-                  <p class="title-s">Atma Jaya Yogyakarta University</p>
-                  <p class="lead">(Informatics Engineering)<br>
-                    Aug 2012 - Sept 2019
-                  </p>
-                  <br>
-                  <p class="title-s">Glints x Binar Academy Batch 6</p>
-                  <p class="lead">(Back-End Developer)<br>
-                    Apr 2020 - July 2020
-                  </p>
-                  <br>
+        
+        <div class="resume-wrapper">
+          <!-- Timeline container -->
+          <div class="timeline-container">
+            <!-- Education Timeline -->
+            <div class="timeline education-timeline">
+              <div class="timeline-header">
+                <div class="timeline-header-icon">
+                  <i class="bi bi-mortarboard"></i>
                 </div>
-                <div class="col-sm-6">
-                  <div class="title-box-2">
-                    <h3 class="text-center">
-                      Experience
-                    </h3>
-                    <div class="line-mf"></div>
+                <h3>Education</h3>
+              </div>
+              
+              <!-- Timeline items -->
+              <div class="timeline-items">
+                <!-- Education item 1 -->
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Aug 2012 - Sept 2019</div>
+                    <h4>Atma Jaya Yogyakarta University</h4>
+                    <p>Informatics Engineering</p>
                   </div>
-                  <p class="title-s">Build App Today Heroes</p>
-                  <p class="lead">Special Region of Yogyakarta<br>
-                    (Intern System Analyst) Feb 2016 - July 2017
-                  </p>
-                  <p class="title-s">IT Consultant Company</p>
-                  <p class="lead">Special Region of Yogyakarta<br>
-                    (Software Engineer) Feb 2021 - Now
-                  </p>
-                  <p class="title-s">Glints Academy</p>
-                  <p class="lead">Special Region of Yogyakarta<br>
-                    (Part-Time Product Owner) Nov 2020 - Mar 2022
-                  </p>
+                </div>
+                
+                <!-- Education item 2 -->
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Apr 2020 - July 2020</div>
+                    <h4>Glints x Binar Academy Batch 6</h4>
+                    <p>Back-End Developer</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Experience Timeline -->
+            <div class="timeline experience-timeline">
+              <div class="timeline-header">
+                <div class="timeline-header-icon">
+                  <i class="bi bi-briefcase"></i>
+                </div>
+                <h3>Experience</h3>
+              </div>
+              
+              <!-- Timeline items -->
+              <div class="timeline-items">
+                <!-- Experience item 1 -->
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Feb 2021 - May 2025</div>
+                    <h4>PT Xapiens Teknologi Indonesia</h4>
+                    <p>Software Engineer</p>
+                    <p class="timeline-location">Special Region of Yogyakarta</p>
+                  </div>
+                </div>
+                
+                <!-- Experience item 2 -->
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Nov 2020 - Mar 2022</div>
+                    <h4>Glints Academy</h4>
+                    <p>Part-Time Product Owner</p>
+                    <p class="timeline-location">Special Region of Yogyakarta</p>
+                  </div>
+                </div>
+                
+                <!-- Experience item 3 -->
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Feb 2016 - July 2017</div>
+                    <h4>Build App Today Heroes</h4>
+                    <p>Intern System Analyst</p>
+                    <p class="timeline-location">Special Region of Yogyakarta</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section><!-- End Services Section -->
+    </section><!-- End Resume Section -->
 
     <!-- ======= Portfolio Section ======= -->
-    <section id="work" class="portfolio-mf sect-pt4 route">
+    <section id="work" class="portfolio-section sect-pt4 route">
       <div class="container">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="title-box text-center">
-              <h3 class="title-a">
-                Portfolio
-              </h3>
-              <div class="line-mf"></div>
-            </div>
-          </div>
+        <div class="section-title">
+          <h2>Portfolio</h2>
+          <div class="section-line"></div>
         </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="box-shadow-full">
-              <div class="col-md-12">
-                <div class="card text-center" style="align-items: center;">
-                  <div class="card-body">
-                    <h4 class="card-title">Sayembara App</h4>
-                    <h6 class="card-subtitle mb-2">Back-End (Node.js)</h6>
-                    <a href="https://sayembara-ga6.herokuapp.com/" class="card-link">Click Here</a>
-                    <div class="embed-responsive embed-responsive-16by9">
-                      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/xCECMFUDp70" allowfullscreen></iframe>
+        
+        <div class="portfolio-wrapper">
+          <div class="portfolio-filters">
+            <button class="portfolio-filter active" data-filter="all">All</button>
+            <button class="portfolio-filter" data-filter="web">Web</button>
+          </div>
+          
+          <div class="portfolio-grid">
+            <!-- Portfolio Item 1 -->
+            <div class="portfolio-item" data-category="web">
+              <div class="portfolio-card">
+                <div class="portfolio-img-container">
+                  <img src="assets/img/portfolio-placeholder.jpg" alt="Sayembara App" class="portfolio-img">
+                  <div class="portfolio-overlay">
+                    <div class="portfolio-overlay-content">
+                      <a href="https://sayembara-ga6.herokuapp.com/" class="portfolio-link" target="_blank">
+                        <i class="bi bi-link-45deg"></i>
+                      </a>
+                      <a href="#portfolioModal1" class="portfolio-preview" data-toggle="modal">
+                        <i class="bi bi-eye"></i>
+                      </a>
                     </div>
                   </div>
                 </div>
-                <br>
-                <br>
+                <div class="portfolio-info">
+                  <h4>Sayembara App</h4>
+                  <p>Back-End (Node.js)</p>
+                  <div class="portfolio-tags">
+                    <span class="portfolio-tag">Node.js</span>
+                    <span class="portfolio-tag">API</span>
+                    <span class="portfolio-tag">Backend</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Portfolio Modal 1 -->
+        <div class="modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Sayembara App</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="embed-responsive embed-responsive-16by9 mb-4">
+                  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/xCECMFUDp70" allowfullscreen></iframe>
+                </div>
+                <h4>Project Description</h4>
+                <p>Sayembara is a backend application built with Node.js that provides a robust API for managing contests and submissions.</p>
+                <p>The application features user authentication, contest creation and management, submission handling, and more.</p>
+                <div class="project-details">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h5>Technologies Used</h5>
+                      <ul>
+                        <li>Node.js</li>
+                        <li>Express</li>
+                        <li>PostgreSQL</li>
+                        <li>Sequelize</li>
+                        <li>JWT Authentication</li>
+                      </ul>
+                    </div>
+                    <div class="col-md-6">
+                      <h5>Project Links</h5>
+                      <p>
+                        <a href="https://sayembara-ga6.herokuapp.com/" target="_blank" class="btn btn-primary">Live Demo</a>
+                        <a href="#" target="_blank" class="btn btn-outline-primary">GitHub</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -238,39 +382,83 @@
     </section><!-- End Portfolio Section -->
 
     <!-- ======= Contact Section ======= -->
-    <section class="paralax-mf footer-paralax bg-image sect-mt4 route"
-      style="background-image: url(assets/img/overlay-bg.jpg)">
-      <div class="overlay-mf"></div>
+    <section id="contact" class="contact-section sect-mt4 route">
+      <div class="contact-bg-overlay"></div>
       <div class="container">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="contact-mf">
-              <div id="contact" class="box-shadow-full">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="title-box-2 pt-4 pt-md-0">
-                      <h5 class="title-left">
-                        Contacted Me At:
-                      </h5>
-                    </div>
-                    <div class="more-info">
-                      <ul class="list-ico">
-                        <li><span class="ion-email"></span>michaelllapandio04@gmail.com</li>
-                      </ul>
-                    </div>
-                    <div class="socials">
-                      <ul>
-                        <li><a href="https://www.facebook.com/michael.limabelas/"><span class="ico-circle"><i
-                                class="ion-social-facebook"></i></span></a></li>
-                        <li><a href="https://www.linkedin.com/in/michael-stevan-lapandio/"><span class="ico-circle"><i
-                                class="ion-social-linkedin"></i></span></a></li>
-                        <li><a href="https://github.com/kyomel"><span class="ico-circle"><i
-                                class="ion-social-github"></i></span></a></li>
-                      </ul>
-                    </div>
+        <div class="section-title">
+          <h2>Contact Me</h2>
+          <div class="section-line"></div>
+        </div>
+        
+        <div class="contact-wrapper">
+          <div class="contact-card">
+            <div class="contact-info">
+              <div class="contact-header">
+                <div class="contact-header-icon">
+                  <i class="bi bi-person-lines-fill"></i>
+                </div>
+                <h3>Let's Connect</h3>
+              </div>
+              
+              <div class="contact-details">
+                <div class="contact-item">
+                  <div class="contact-item-icon">
+                    <i class="bi bi-envelope"></i>
+                  </div>
+                  <div class="contact-item-content">
+                    <h4>Email</h4>
+                    <a href="mailto:michaelllapandio04@gmail.com">michaelllapandio04@gmail.com</a>
+                  </div>
+                </div>
+                
+                <div class="contact-item">
+                  <div class="contact-item-icon">
+                    <i class="bi bi-geo-alt"></i>
+                  </div>
+                  <div class="contact-item-content">
+                    <h4>Location</h4>
+                    <p>Yogyakarta, Indonesia</p>
                   </div>
                 </div>
               </div>
+              
+              <div class="social-links">
+                <a href="https://www.linkedin.com/in/michael-stevan-lapandio/" class="social-link linkedin" target="_blank" aria-label="LinkedIn">
+                  <i class="bi bi-linkedin"></i>
+                </a>
+                <a href="https://github.com/kyomel" class="social-link github" target="_blank" aria-label="GitHub">
+                  <i class="bi bi-github"></i>
+                </a>
+                <a href="https://www.facebook.com/michael.limabelas/" class="social-link facebook" target="_blank" aria-label="Facebook">
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a href="https://dev.to/kyomel" class="social-link devto" target="_blank" aria-label="Dev.to">
+                  <i class="bi bi-pen-fill"></i>
+                </a>
+              </div>
+            </div>
+            
+            <div class="contact-message">
+              <div class="contact-message-header">
+                <h3>Send Me a Message</h3>
+                <p>Feel free to reach out if you have any questions or want to work together!</p>
+              </div>
+              
+              <form class="contact-form">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Subject">
+                </div>
+                <div class="form-group">
+                  <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit" class="btn-send-message">Send Message</button>
+              </form>
             </div>
           </div>
         </div>
@@ -285,7 +473,7 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="copyright-box">
-            <p class="copyright">Copyright &copy;2022 <strong>Michael Stevan Lapandio</strong></p>
+            <p class="copyright">Copyright &copy;2025 <strong>Michael Stevan Lapandio</strong></p>
           </div>
         </div>
       </div>
@@ -308,6 +496,9 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/particles.min.js"></script>
+  <script src="assets/js/portfolio.js"></script>
 
 </body>
 
