@@ -1,61 +1,41 @@
-/**
- * Portfolio filtering functionality
- */
-document.addEventListener('DOMContentLoaded', function() {
-  // Get all filter buttons and portfolio items
-  const filterButtons = document.querySelectorAll('.portfolio-filter');
-  const portfolioItems = document.querySelectorAll('.portfolio-item');
+document.addEventListener('DOMContentLoaded', function () {
+  'use strict';
 
-  // Add click event to filter buttons
-  filterButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      // Remove active class from all buttons
-      filterButtons.forEach(btn => btn.classList.remove('active'));
-      
-      // Add active class to clicked button
+  var filterButtons = document.querySelectorAll('.portfolio-filter-btn');
+  var portfolioCards = document.querySelectorAll('.portfolio-card-modern');
+
+  if (filterButtons.length === 0 || portfolioCards.length === 0) return;
+
+  portfolioCards.forEach(function (card) {
+    card.style.transition =
+      'opacity 0.35s cubic-bezier(0.4,0,0.2,1), transform 0.35s cubic-bezier(0.4,0,0.2,1)';
+  });
+
+  filterButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      filterButtons.forEach(function (btn) {
+        btn.classList.remove('active');
+      });
       this.classList.add('active');
-      
-      // Get filter value
-      const filterValue = this.getAttribute('data-filter');
-      
-      // Filter items
-      portfolioItems.forEach(item => {
-        const category = item.getAttribute('data-category');
-        
-        // Show/hide items based on filter
+
+      var filterValue = this.getAttribute('data-filter');
+
+      portfolioCards.forEach(function (card) {
+        var category = card.getAttribute('data-category');
+
         if (filterValue === 'all' || filterValue === category) {
-          item.style.display = 'block';
-          setTimeout(() => {
-            item.style.opacity = '1';
-            item.style.transform = 'scale(1)';
-          }, 50);
+          card.style.display = '';
+          void card.offsetWidth;
+          card.style.opacity = '1';
+          card.style.transform = 'scale(1) translateY(0)';
         } else {
-          item.style.opacity = '0';
-          item.style.transform = 'scale(0.8)';
-          setTimeout(() => {
-            item.style.display = 'none';
-          }, 300);
+          card.style.opacity = '0';
+          card.style.transform = 'scale(0.85) translateY(20px)';
+          setTimeout(function () {
+            card.style.display = 'none';
+          }, 350);
         }
       });
     });
   });
-
-  // Create a placeholder image for portfolio items
-  function createPlaceholderImage() {
-    const placeholders = document.querySelectorAll('img[src="assets/img/portfolio-placeholder.jpg"]');
-    
-    if (placeholders.length > 0) {
-      placeholders.forEach((img, index) => {
-        // Create different colored placeholders for different items
-        const colors = ['3a8f7f', '5bb5a6', '4a9f8f'];
-        const color = colors[index % colors.length];
-        
-        // Set placeholder image from placeholder.com service
-        img.src = `https://via.placeholder.com/600x400/${color}/FFFFFF?text=Portfolio+Project`;
-      });
-    }
-  }
-  
-  // Call the function to create placeholders
-  createPlaceholderImage();
 });
