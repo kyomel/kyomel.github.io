@@ -523,12 +523,237 @@
   };
 
   // ============================================
+  // TIMELINE STAGGER ANIMATION
+  // ============================================
+  const TimelineAnimator = {
+    init() {
+      const items = document.querySelectorAll(".timeline-item");
+      if (!items.length || !("IntersectionObserver" in window)) {
+        items.forEach((el) => el.classList.add("revealed"));
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const siblings = entry.target.parentElement.querySelectorAll(".timeline-item");
+              siblings.forEach((item, i) => {
+                setTimeout(() => {
+                  item.classList.add("revealed");
+                }, i * 150);
+              });
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+
+      // Observe only the first item in each timeline
+      document.querySelectorAll(".timeline").forEach((timeline) => {
+        const first = timeline.querySelector(".timeline-item");
+        if (first) observer.observe(first);
+      });
+    },
+  };
+
+  // ============================================
+  // INFO CARDS STAGGER
+  // ============================================
+  const InfoCardsAnimator = {
+    init() {
+      const items = document.querySelectorAll(".info-card-item");
+      if (!items.length || !("IntersectionObserver" in window)) {
+        items.forEach((el) => el.classList.add("revealed"));
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              items.forEach((item, i) => {
+                setTimeout(() => {
+                  item.classList.add("revealed");
+                }, i * 100);
+              });
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+
+      const firstCard = items[0];
+      if (firstCard) observer.observe(firstCard);
+    },
+  };
+
+  // ============================================
+  // NAVBAR SCROLL DIRECTION (hide/show)
+  // ============================================
+  const NavbarScrollDirection = {
+    lastScrollY: 0,
+    ticking: false,
+
+    init() {
+      const nav = document.getElementById("mainNav");
+      if (!nav) return;
+
+      window.addEventListener("scroll", () => {
+        if (!this.ticking) {
+          requestAnimationFrame(() => {
+            const currentY = window.scrollY;
+            const diff = currentY - this.lastScrollY;
+
+            // Only toggle after scrolling 5px to avoid jitter
+            if (Math.abs(diff) > 5) {
+              if (diff > 0 && currentY > 200) {
+                nav.classList.add("nav-hidden");
+              } else {
+                nav.classList.remove("nav-hidden");
+              }
+              this.lastScrollY = currentY;
+            }
+
+            this.ticking = false;
+          });
+          this.ticking = true;
+        }
+      }, { passive: true });
+    },
+  };
+
+  // ============================================
+  // MAGNETIC BUTTONS
+  // ============================================
+  const MagneticButtons = {
+    init() {
+      const buttons = document.querySelectorAll(".btn, .social-btn");
+      if (!buttons.length) return;
+
+      buttons.forEach((btn) => {
+        btn.setAttribute("data-magnetic", "");
+
+        btn.addEventListener("mousemove", (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          const strength = 0.3;
+
+          btn.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+        });
+
+        btn.addEventListener("mouseleave", () => {
+          btn.style.transform = "";
+        });
+      });
+    },
+  };
+
+  // ============================================
+  // PORTFOLIO CARD 3D TILT
+  // ============================================
+  const CardTilt = {
+    init() {
+      const cards = document.querySelectorAll(".portfolio-card");
+      if (!cards.length) return;
+
+      cards.forEach((card) => {
+        card.setAttribute("data-tilt", "");
+
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width;
+          const y = (e.clientY - rect.top) / rect.height;
+          const tiltX = (y - 0.5) * 8;
+          const tiltY = (x - 0.5) * -8;
+
+          card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-6px)`;
+        });
+
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "";
+          card.style.transition = "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+          setTimeout(() => {
+            card.style.transition = "";
+          }, 500);
+        });
+      });
+    },
+  };
+
+  // ============================================
+  // CURSOR GLOW (HERO ONLY)
+  // ============================================
+  const CursorGlow = {
+    init() {
+      const hero = document.querySelector(".hero");
+      if (!hero) return;
+
+      // Don't init on touch devices
+      if ("ontouchstart" in window) return;
+
+      const glow = document.createElement("div");
+      glow.className = "cursor-glow";
+      document.body.appendChild(glow);
+
+      hero.addEventListener("mouseenter", () => {
+        glow.classList.add("visible");
+      });
+
+      hero.addEventListener("mouseleave", () => {
+        glow.classList.remove("visible");
+      });
+
+      hero.addEventListener("mousemove", (e) => {
+        glow.style.left = e.clientX + "px";
+        glow.style.top = e.clientY + "px";
+      });
+    },
+  };
+
+  // ============================================
+  // HERO NAME CHARACTER SPLIT
+  // ============================================
+  const HeroNameSplit = {
+    init() {
+      const heroName = document.querySelector(".hero-name");
+      if (!heroName) return;
+
+      const text = heroName.textContent;
+      heroName.innerHTML = "";
+
+      text.split("").forEach((char) => {
+        const span = document.createElement("span");
+        span.className = "char";
+        span.textContent = char === " " ? "\u00A0" : char;
+        heroName.appendChild(span);
+      });
+    },
+  };
+
+  // ============================================
+  // GRADIENT TEXT ON SECTION TITLES
+  // ============================================
+  const GradientTitles = {
+    init() {
+      const titles = document.querySelectorAll(".section-title");
+      titles.forEach((title) => {
+        title.classList.add("gradient-text");
+      });
+    },
+  };
+
+  // ============================================
   // INIT ALL
   // ============================================
   document.addEventListener("DOMContentLoaded", () => {
     ThemeManager.init();
     Preloader.init();
     Navbar.init();
+    NavbarScrollDirection.init();
     SmoothScroll.init();
     RevealAnimator.init();
     TypedEffect.init();
@@ -536,5 +761,12 @@
     PortfolioFilter.init();
     ContactForm.init();
     SkillChips.init();
+    TimelineAnimator.init();
+    InfoCardsAnimator.init();
+    MagneticButtons.init();
+    CardTilt.init();
+    CursorGlow.init();
+    HeroNameSplit.init();
+    GradientTitles.init();
   });
 })();

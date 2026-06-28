@@ -8,7 +8,7 @@
   /* Typography */
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
 
   /* Spacing */
   --sp-1: 0.25rem;
@@ -1492,6 +1492,207 @@ a.contact-item:hover {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ============================================
+   NAVBAR SCROLL DIRECTION
+   ============================================ */
+.navbar.nav-hidden {
+  transform: translateY(-100%);
+}
+
+.navbar {
+  transition: all var(--t-base), transform 0.3s ease;
+}
+
+/* ============================================
+   MAGNETIC BUTTON EFFECT
+   ============================================ */
+.btn[data-magnetic],
+.social-btn[data-magnetic],
+.filter-btn[data-magnetic] {
+  transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1), background var(--t-base), color var(--t-base), border-color var(--t-base), box-shadow var(--t-base);
+}
+
+/* ============================================
+   CARD 3D TILT
+   ============================================ */
+.portfolio-card[data-tilt] {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.portfolio-card[data-tilt] .portfolio-card-body {
+  transform: translateZ(20px);
+}
+
+.portfolio-card[data-tilt] .portfolio-card-icon {
+  transform: translateZ(40px);
+}
+
+.portfolio-card[data-tilt]:hover {
+  transform: translateY(-6px);
+}
+
+/* ============================================
+   GRADIENT TEXT ANIMATION
+   ============================================ */
+.section-title.gradient-text {
+  background: linear-gradient(
+    90deg,
+    var(--heading) 0%,
+    var(--accent) 25%,
+    var(--heading) 50%,
+    var(--accent) 75%,
+    var(--heading) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 4s linear infinite;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ============================================
+   TIMELINE STAGGER
+   ============================================ */
+.timeline-item {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeline-item.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ============================================
+   INFO CARD STAGGER
+   ============================================ */
+.info-card-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.info-card-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   CURSOR GLOW (HERO)
+   ============================================ */
+.cursor-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-glow.visible {
+  opacity: 1;
+}
+
+/* ============================================
+   LINK UNDERLINE ANIMATION
+   ============================================ */
+.animated-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animated-underline:hover::after {
+  width: 100%;
+}
+
+/* ============================================
+   HERO NAME HOVER EFFECT
+   ============================================ */
+.hero-name .char {
+  display: inline-block;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.hero-name .char:hover {
+  transform: translateY(-8px) scale(1.1);
+  color: var(--accent);
+}
+
+/* ============================================
+   FLOATING ANIMATION FOR CARDS
+   ============================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.portfolio-card-visual .portfolio-card-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ============================================
+   PULSE RING FOR BUTTONS
+   ============================================ */
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+/* ============================================
+   SMOOTH SECTION TRANSITIONS
+   ============================================ */
+.section {
+  position: relative;
+  overflow: hidden;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
 }
 
 /* ============================================
