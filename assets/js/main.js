@@ -53,7 +53,10 @@
         const preloader = document.getElementById("preloader");
         if (preloader) {
           preloader.classList.add("fade-out");
-          setTimeout(() => preloader.remove(), 500);
+          setTimeout(() => {
+            preloader.remove();
+            document.querySelector(".hero-content").classList.add("hero-entrance");
+          }, 500);
         }
       });
     },
@@ -76,6 +79,7 @@
       this.links = document.querySelectorAll(".nav-link, .navbar-brand");
 
       if (this.toggler) {
+        this.toggler.setAttribute("aria-expanded", "false");
         this.toggler.addEventListener("click", () => this.toggleMenu());
       }
 
@@ -96,6 +100,18 @@
         }
       });
 
+      // Close menu on Escape key
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key === "Escape" &&
+          this.menu &&
+          this.menu.classList.contains("nav-open")
+        ) {
+          this.closeMenu();
+          this.toggler.focus();
+        }
+      });
+
       // Scroll effects
       window.addEventListener("scroll", () => this.onScroll(), { passive: true });
       this.onScroll();
@@ -104,13 +120,16 @@
     toggleMenu() {
       this.toggler.classList.toggle("active");
       this.menu.classList.toggle("nav-open");
-      document.body.style.overflow = this.menu.classList.contains("nav-open")
-        ? "hidden"
-        : "";
+      const isOpen = this.menu.classList.contains("nav-open");
+      this.toggler.setAttribute("aria-expanded", String(isOpen));
+      document.body.style.overflow = isOpen ? "hidden" : "";
     },
 
     closeMenu() {
-      if (this.toggler) this.toggler.classList.remove("active");
+      if (this.toggler) {
+        this.toggler.classList.remove("active");
+        this.toggler.setAttribute("aria-expanded", "false");
+      }
       if (this.menu) this.menu.classList.remove("nav-open");
       document.body.style.overflow = "";
     },
@@ -413,27 +432,25 @@
 
       if (!buttons.length || !cards.length) return;
 
-      buttons.forEach((btn) => {
+      buttons.forEach((btn, i) => {
+        btn.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+
         btn.addEventListener("click", () => {
-          buttons.forEach((b) => b.classList.remove("active"));
+          buttons.forEach((b) => {
+            b.classList.remove("active");
+            b.setAttribute("aria-pressed", "false");
+          });
           btn.classList.add("active");
+          btn.setAttribute("aria-pressed", "true");
 
           const filter = btn.dataset.filter;
 
           cards.forEach((card) => {
             const category = card.dataset.category;
             if (filter === "all" || filter === category) {
-              card.style.display = "";
-              requestAnimationFrame(() => {
-                card.style.opacity = "1";
-                card.style.transform = "scale(1) translateY(0)";
-              });
+              card.classList.remove('filtered-out');
             } else {
-              card.style.opacity = "0";
-              card.style.transform = "scale(0.85) translateY(20px)";
-              setTimeout(() => {
-                card.style.display = "none";
-              }, 350);
+              card.classList.add('filtered-out');
             }
           });
         });
@@ -449,27 +466,70 @@
       const form = document.getElementById("contactForm");
       if (!form) return;
 
+      const emailField = form.querySelector('#email');
+      if (emailField) {
+        emailField.addEventListener('blur', () => this.validateEmail(emailField));
+        emailField.addEventListener('input', () => {
+          const group = emailField.closest('.form-group');
+          if (group && group.classList.contains('error')) {
+            this.validateEmail(emailField);
+          }
+        });
+      }
+
       form.addEventListener("submit", (e) => {
         e.preventDefault();
+
+        let valid = true;
+        form.querySelectorAll('[required]').forEach((field) => {
+          const group = field.closest('.form-group');
+          if (!field.value.trim()) {
+            valid = false;
+            if (group) {
+              group.classList.add('error');
+              const errEl = group.querySelector('.field-error');
+              if (errEl) errEl.textContent = 'This field is required.';
+            }
+          } else {
+            if (group) group.classList.remove('error');
+          }
+        });
+
+        if (emailField && emailField.value.trim() && !this.isValidEmail(emailField.value.trim())) {
+          valid = false;
+          this.showFieldError(emailField, 'Please enter a valid email address.');
+        }
+
+        if (!valid) {
+          const feedback = document.getElementById("formFeedback");
+          if (feedback) {
+            feedback.textContent = "Please fix the errors above before sending.";
+            feedback.className = "form-feedback error";
+          }
+          return;
+        }
 
         const btn = form.querySelector(".btn-submit");
         const feedback = document.getElementById("formFeedback");
         const originalHTML = btn.innerHTML;
 
-        btn.innerHTML = '<span>Sending...</span> <i class="bi bi-hourglass-split"></i>';
+        btn.classList.add('loading');
+        btn.innerHTML = '<span>Sending</span><i class="bi bi-hourglass-split"></i>';
         btn.disabled = true;
 
-        // Simulate submission (no backend)
         setTimeout(() => {
-          btn.innerHTML = '<span>Sent!</span> <i class="bi bi-check-lg"></i>';
+          btn.classList.remove('loading');
+          btn.classList.add('success');
+          btn.innerHTML = '<span>Sent</span><i class="bi bi-check-lg"></i>';
           form.reset();
 
           if (feedback) {
-            feedback.textContent = "Message sent successfully!";
+            feedback.textContent = "Message sent successfully.";
             feedback.className = "form-feedback success";
           }
 
           setTimeout(() => {
+            btn.classList.remove('success');
             btn.innerHTML = originalHTML;
             btn.disabled = false;
             if (feedback) {
@@ -479,6 +539,41 @@
           }, 2500);
         }, 1200);
       });
+    },
+
+    isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    },
+
+    validateEmail(field) {
+      const value = field.value.trim();
+      const group = field.closest('.form-group');
+      if (value && !this.isValidEmail(value)) {
+        this.showFieldError(field, 'Please enter a valid email address.');
+      } else {
+        this.clearFieldError(field);
+      }
+    },
+
+    showFieldError(field, message) {
+      const group = field.closest('.form-group');
+      if (!group) return;
+      group.classList.add('error');
+      let errEl = group.querySelector('.field-error');
+      if (!errEl) {
+        errEl = document.createElement('span');
+        errEl.className = 'field-error';
+        group.appendChild(errEl);
+      }
+      errEl.textContent = message;
+    },
+
+    clearFieldError(field) {
+      const group = field.closest('.form-group');
+      if (!group) return;
+      group.classList.remove('error');
+      const errEl = group.querySelector('.field-error');
+      if (errEl) errEl.textContent = '';
     },
   };
 
