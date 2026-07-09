@@ -5,10 +5,10 @@
 
 /* ---------- Design Tokens ---------- */
 :root {
-  /* Typography */
+  /* Typography — Inter body, IBM Plex Mono terminal classic */
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   /* Spacing */
   --sp-1: 0.25rem;
@@ -161,6 +161,23 @@ body {
   color: var(--text);
   transition: background-color var(--t-base), color var(--t-base);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ambient grain — CRT / film texture without heavy assets */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px 180px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -169,6 +186,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
   color: var(--heading);
   font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
 p { margin: 0 0 var(--sp-3); }
@@ -363,6 +381,7 @@ input, textarea { font-family: inherit; font-size: inherit; }
   font-family: var(--font-mono);
   font-size: 1.3rem;
   font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--text);
   letter-spacing: -0.5px;
   transition: color var(--t-fast);
@@ -1522,12 +1541,104 @@ a.contact-item:hover {
    FOOTER
    ============================================ */
 .footer {
-  padding: var(--sp-6) 0;
+  position: relative;
+  padding: var(--sp-6) 0 var(--sp-5);
   background: var(--footer-bg);
   text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.18) 100%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 2px,
+      rgba(255, 255, 255, 0.015) 2px,
+      rgba(255, 255, 255, 0.015) 3px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.footer-marquee {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: var(--sp-5);
+  border-block: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+}
+
+.footer-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: footer-marquee 36s linear infinite;
+  will-change: transform;
+}
+
+.footer-marquee:hover .footer-marquee-track,
+.footer-marquee:focus-within .footer-marquee-track {
+  animation-play-state: paused;
+}
+
+.footer-marquee-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: var(--sp-3);
+  padding: 0.85rem 0;
+  padding-right: var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+  white-space: nowrap;
+}
+
+.footer-marquee-group span:not(.footer-marquee-sep) {
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.footer-marquee-sep {
+  color: rgba(255, 255, 255, 0.22);
+}
+
+@keyframes footer-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
 }
 
 .footer-content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1540,6 +1651,7 @@ a.contact-item:hover {
   font-weight: 600;
   color: var(--accent);
   margin-bottom: var(--sp-1);
+  letter-spacing: 0.02em;
 }
 
 .footer-text {
@@ -1550,9 +1662,11 @@ a.contact-item:hover {
 
 .footer-copy {
   font-size: 0.8rem;
+  font-family: var(--font-mono);
   color: var(--footer-text);
   opacity: 0.7;
   margin: 0;
+  letter-spacing: 0.02em;
 }
 
 /* ============================================
@@ -2066,5 +2180,18 @@ a.contact-item:hover {
 
   .btn-submit.loading .btn-submit-text::after {
     animation-duration: 0.6s !important;
+  }
+
+  .footer-marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .footer-marquee-group[aria-hidden="true"] {
+    display: none;
+  }
+
+  body::after {
+    display: none;
   }
 }
