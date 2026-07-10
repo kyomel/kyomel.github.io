@@ -1,725 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <title>Michael Stevan Lapandio — Software Engineer</title>
     <meta
       name="description"
-      content="Software Engineer specializing in ReactJS, NodeJS, and Golang. Portfolio of Michael Stevan Lapandio."
+      content="Software Engineer specializing in ReactJS, NodeJS, and Golang. Interactive terminal portfolio of Michael Stevan Lapandio."
     />
     <meta
       name="keywords"
-      content="software engineer, web developer, golang, react, nodejs, portfolio"
+      content="software engineer, web developer, golang, react, nodejs, portfolio, terminal"
     />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#020402" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4f1e8" media="(prefers-color-scheme: light)" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
 
-    <!-- Favicons -->
     <link rel="icon" href="assets/img/favicon.png" />
     <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
 
-    <!-- Google Fonts -->
+    <!-- Classic terminal fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Share+Tech+Mono&family=VT323&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-
-    <!-- Styles -->
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
 
-  <body id="page-top">
-    <a href="#main" class="skip-link">Skip to main content</a>
+  <body>
+    <a href="#shell-input" class="skip-link">Skip to terminal input</a>
 
-    <!-- Theme Toggle -->
-    <button
-      class="theme-toggle"
-      id="theme-toggle"
-      aria-label="Toggle dark mode"
-      type="button"
-    >
-      <i class="bi bi-moon-fill theme-icon-moon"></i>
-      <i class="bi bi-sun-fill theme-icon-sun"></i>
-    </button>
-
-    <!-- Navbar -->
-    <nav class="navbar fixed-top" id="mainNav">
-      <div class="container navbar-container">
-        <a class="navbar-brand js-scroll" href="#page-top">
-          <span class="brand-bracket">&lt;</span>kyomel<span
-            class="brand-bracket"
-            >/&gt;</span
-          >
-        </a>
-        <button
-          class="navbar-toggler"
-          id="navbar-toggler"
-          type="button"
-          aria-label="Toggle navigation"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
+    <!-- Boot screen -->
+    <div id="boot-screen" class="boot-screen" aria-hidden="true">
+      <div class="boot-inner">
+        <pre class="boot-log" id="boot-log"></pre>
+        <button type="button" class="boot-skip" id="boot-skip">
+          tap to skip
         </button>
-        <div class="navbar-menu" id="navbarMenu">
-          <ul class="navbar-nav">
-            <li>
-              <a class="nav-link js-scroll active" href="#home">Home</a>
-            </li>
-            <li>
-              <a class="nav-link js-scroll" href="#about">About</a>
-            </li>
-            <li>
-              <a class="nav-link js-scroll" href="#resume">Resume</a>
-            </li>
-            <li>
-              <a class="nav-link js-scroll" href="#work">Portfolio</a>
-            </li>
-            <li>
-              <a class="nav-link js-scroll" href="#contact">Contact</a>
-            </li>
-          </ul>
-        </div>
       </div>
-    </nav>
+    </div>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-      <canvas id="particles-canvas"></canvas>
-      <div class="hero-grid-overlay"></div>
-
-      <div class="hero-content">
-        <div class="container">
-          <div class="hero-text">
-            <div class="hero-greeting">
-              <span class="hero-greeting-icon">&#128075;</span>
-              Hello, I'm
-            </div>
-            <h1 class="hero-name">
-              Michael Stevan<br /> Lapandio
-            </h1>
-            <div class="hero-role-wrapper">
-              <span class="hero-role-prefix">$</span>
-              <span class="text-slider"></span>
-              <span class="hero-cursor">_</span>
-            </div>
-            <div class="hero-roles-hidden">
-              <span class="text-slider-items"
-                >Software Engineer, Web3 Enthusiast, AI Enthusiast, Basketball
-                Player</span
-              >
-            </div>
-
-            <p class="hero-tagline">
-              Building robust web applications with clean code, scalable
-              architecture, and a focus on user experience.
-            </p>
-
-            <div class="hero-buttons">
-              <a href="#about" class="btn btn-primary js-scroll">
-                <span>About Me</span>
-                <i class="bi bi-arrow-down"></i>
-              </a>
-              <a href="#work" class="btn btn-outline js-scroll">
-                <span>View Work</span>
-                <i class="bi bi-collection"></i>
-              </a>
-            </div>
-          </div>
+    <div class="terminal-app" id="terminal-app">
+      <header class="term-titlebar">
+        <div class="term-traffic" aria-hidden="true">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
         </div>
+        <div class="term-title">
+          <span class="term-title-path">guest@kyomel:~</span>
+          <span class="term-title-sep">—</span>
+          <span class="term-title-file">portfolio.sh</span>
+        </div>
+        <div class="term-actions">
+          <button
+            type="button"
+            class="term-btn"
+            id="theme-toggle"
+            title="theme dark|light"
+            aria-label="Toggle theme"
+          >
+            <span data-theme-label>dark</span>
+          </button>
+          <button
+            type="button"
+            class="term-btn"
+            id="scanline-toggle"
+            title="toggle CRT"
+            aria-label="Toggle CRT effects"
+            aria-pressed="true"
+          >
+            crt
+          </button>
+          <button
+            type="button"
+            class="term-btn"
+            id="clear-btn"
+            title="clear"
+            aria-label="Clear terminal"
+          >
+            clear
+          </button>
+        </div>
+      </header>
+
+      <nav class="term-nav" aria-label="Quick commands">
+        <button type="button" class="term-nav-link" data-cmd="help">help</button>
+        <button type="button" class="term-nav-link" data-cmd="about">about</button>
+        <button type="button" class="term-nav-link" data-cmd="skills">skills</button>
+        <button type="button" class="term-nav-link" data-cmd="experience">experience</button>
+        <button type="button" class="term-nav-link" data-cmd="projects">projects</button>
+        <button type="button" class="term-nav-link" data-cmd="contact">contact</button>
+        <button type="button" class="term-nav-link" data-cmd="neofetch">neofetch</button>
+        <button type="button" class="term-nav-link" data-cmd="theme">theme</button>
+      </nav>
+
+      <main class="term-body" id="main">
+        <div
+          id="terminal-output"
+          class="terminal-output"
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions"
+        ></div>
+
+        <form
+          id="shell-form"
+          class="shell-form"
+          autocomplete="off"
+          spellcheck="false"
+        >
+          <label class="shell-prompt" for="shell-input">
+            <span class="prompt-user">guest</span><span class="prompt-at">@</span
+            ><span class="prompt-host">kyomel</span
+            ><span class="prompt-path">:~</span
+            ><span class="prompt-dollar">$</span>
+          </label>
+          <input
+            id="shell-input"
+            class="shell-input"
+            type="text"
+            name="cmd"
+            aria-label="Terminal command"
+            inputmode="text"
+            enterkeyhint="send"
+            autocapitalize="none"
+            autocorrect="off"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <span class="shell-cursor" aria-hidden="true"></span>
+          <button type="submit" class="shell-run" aria-label="Run command">
+            ↵
+          </button>
+        </form>
+
+        <!-- Mobile history controls -->
+        <div class="mobile-controls" aria-label="Terminal controls">
+          <button type="button" class="mob-btn" id="hist-prev" aria-label="Previous command">
+            ↑
+          </button>
+          <button type="button" class="mob-btn" id="hist-next" aria-label="Next command">
+            ↓
+          </button>
+          <button type="button" class="mob-btn" id="mob-clear" aria-label="Clear screen">
+            clr
+          </button>
+          <button type="button" class="mob-btn" id="mob-help" data-cmd="help" aria-label="Help">
+            ?
+          </button>
+        </div>
+      </main>
+
+      <div class="term-statusbar" aria-hidden="true">
+        <span class="status-desk">↑↓ history</span>
+        <span class="status-desk">Tab complete</span>
+        <span class="status-desk">Ctrl+L clear</span>
+        <span class="status-mobile">tap chips · type help</span>
+        <span>type <strong>help</strong></span>
       </div>
 
-      <div class="hero-scroll-down">
-        <a href="#about" class="js-scroll" aria-label="Scroll down">
-          <span class="mouse">
-            <span class="mouse-wheel"></span>
-          </span>
-          <span class="scroll-text">Scroll</span>
-        </a>
+      <div class="crt-scanlines" aria-hidden="true"></div>
+      <div class="crt-vignette" aria-hidden="true"></div>
+      <div class="crt-sweep" aria-hidden="true"></div>
+    </div>
+
+    <noscript>
+      <div class="noscript">
+        <h1>Michael Stevan Lapandio</h1>
+        <p>Software Engineer — Yogyakarta, Indonesia</p>
+        <p>
+          Email:
+          <a href="mailto:michaellapandio04@gmail.com"
+            >michaellapandio04@gmail.com</a
+          >
+        </p>
+        <p>
+          <a href="https://github.com/kyomel">GitHub</a> ·
+          <a href="https://www.linkedin.com/in/michael-stevan-lapandio/"
+            >LinkedIn</a
+          >
+        </p>
+        <p>Enable JavaScript for the interactive terminal portfolio.</p>
       </div>
-    </section>
-
-    <main id="main">
-      <!-- About Section -->
-      <section id="about" class="section about-section">
-        <div class="container">
-          <div class="section-header reveal-up" data-delay="0">
-            <span class="section-label">01 / About</span>
-            <h2 class="section-title">About Me</h2>
-            <div class="section-line"></div>
-          </div>
-
-          <div class="about-wrapper">
-            <div class="about-left reveal-left" data-delay="100">
-              <div class="profile-card">
-                <div class="profile-img-wrap">
-                  <img
-                    src="assets/img/wallpaper-portfolio.jpg"
-                    class="profile-img"
-                    alt="Michael Stevan Lapandio"
-                  />
-                </div>
-                <div class="profile-status">
-                  <span class="status-dot"></span>
-                  Available for opportunities
-                </div>
-              </div>
-
-              <div class="info-cards">
-                <div class="info-card-item">
-                  <div class="info-icon"><i class="bi bi-person"></i></div>
-                  <div class="info-text">
-                    <span class="info-label">Name</span>
-                    <span class="info-value">Michael Stevan Lapandio</span>
-                  </div>
-                </div>
-                <div class="info-card-item">
-                  <div class="info-icon"><i class="bi bi-calendar3"></i></div>
-                  <div class="info-text">
-                    <span class="info-label">Birthday</span>
-                    <span class="info-value">13 May 1994</span>
-                  </div>
-                </div>
-                <div class="info-card-item">
-                  <div class="info-icon"><i class="bi bi-briefcase"></i></div>
-                  <div class="info-text">
-                    <span class="info-label">Profile</span>
-                    <span class="info-value">Software Engineer</span>
-                  </div>
-                </div>
-                <div class="info-card-item">
-                  <div class="info-icon"><i class="bi bi-envelope"></i></div>
-                  <div class="info-text">
-                    <span class="info-label">Email</span>
-                    <span class="info-value"
-                      >michaellapandio04@gmail.com</span
-                    >
-                  </div>
-                </div>
-                <div class="info-card-item">
-                  <div class="info-icon"><i class="bi bi-geo-alt"></i></div>
-                  <div class="info-text">
-                    <span class="info-label">Location</span>
-                    <span class="info-value">Yogyakarta, Indonesia</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="about-right reveal-right" data-delay="200">
-              <h3 class="about-heading">
-                Software Engineer based in Yogyakarta
-              </h3>
-
-              <div class="about-text">
-                <p>
-                  As a seasoned Software Engineer with over three years of
-                  experience in the ICT industry, I have honed my skills in both
-                  front-end and back-end development, specializing in
-                  technologies such as ReactJS, NodeJS, and Golang. My tenure at
-                  Xapiens Teknologi Indonesia has been marked by significant
-                  achievements, including the development of a digital approval
-                  process that reduced manual intervention by 70%.
-                </p>
-                <p>
-                  I hold a Bachelor of Engineering in Informatics from Atma Jaya
-                  Yogyakarta University and have furthered my expertise through
-                  bootcamps and certifications, including courses in Go and
-                  identity and access engineering. My diverse skill set includes
-                  proficiency in Go, JavaScript, Python, and Rust, and
-                  technologies like Kubernetes, Docker, and SQL databases.
-                </p>
-                <p>
-                  I am committed to leveraging my technical skills and leadership
-                  experience to drive impactful projects and mentor future tech
-                  talent. Outside of work, I enjoy playing basketball and sharing
-                  knowledge with others.
-                </p>
-              </div>
-
-              <div class="skills-section">
-                <h4 class="skills-heading">Tech Stack</h4>
-                <div class="skills-grid">
-                  <div class="skill-chip"><i class="bi bi-code-slash"></i> JavaScript</div>
-                  <div class="skill-chip"><i class="bi bi-filetype-html"></i> HTML/CSS</div>
-                  <div class="skill-chip"><i class="bi bi-terminal"></i> Go</div>
-                  <div class="skill-chip"><i class="bi bi-server"></i> Node.js</div>
-                  <div class="skill-chip"><i class="bi bi-filetype-py"></i> Python</div>
-                  <div class="skill-chip"><i class="bi bi-git"></i> Git</div>
-                  <div class="skill-chip"><i class="bi bi-docker"></i> Docker</div>
-                  <div class="skill-chip"><i class="bi bi-cloud"></i> Kubernetes</div>
-                  <div class="skill-chip"><i class="bi bi-database"></i> SQL</div>
-                  <div class="skill-chip"><i class="bi bi-braces"></i> Rust</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Resume Section -->
-      <section id="resume" class="section resume-section">
-        <div class="container">
-          <div class="section-header reveal-up" data-delay="0">
-            <span class="section-label">02 / Resume</span>
-            <h2 class="section-title">Experience &amp; Education</h2>
-            <div class="section-line"></div>
-          </div>
-
-          <div class="resume-wrapper">
-            <div class="resume-column reveal-left" data-delay="100">
-              <h3 class="resume-column-title">
-                <i class="bi bi-briefcase-fill"></i>
-                Experience
-              </h3>
-              <div class="timeline">
-                <div class="timeline-item">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-period">Jan 2022 — Present</div>
-                    <h4 class="timeline-title">Xapiens Teknologi Indonesia</h4>
-                    <span class="timeline-role">Software Engineer</span>
-                    <p class="timeline-location">Jakarta, Indonesia</p>
-                  </div>
-                </div>
-                <div class="timeline-item">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-period">Nov 2020 — Mar 2022</div>
-                    <h4 class="timeline-title">Glints Academy</h4>
-                    <span class="timeline-role"
-                      >Part-Time Product Owner</span
-                    >
-                    <p class="timeline-location">Remote</p>
-                  </div>
-                </div>
-                <div class="timeline-item">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-period">Feb 2016 — Jul 2017</div>
-                    <h4 class="timeline-title">Build App Today Heroes</h4>
-                    <span class="timeline-role">Intern System Analyst</span>
-                    <p class="timeline-location">Yogyakarta, Indonesia</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="resume-column reveal-right" data-delay="200">
-              <h3 class="resume-column-title">
-                <i class="bi bi-mortarboard-fill"></i>
-                Education
-              </h3>
-              <div class="timeline">
-                <div class="timeline-item">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-period">2016 — 2020</div>
-                    <h4 class="timeline-title">
-                      Atma Jaya Yogyakarta University
-                    </h4>
-                    <span class="timeline-role"
-                      >B.Eng. in Informatics Engineering</span
-                    >
-                    <p class="timeline-location">Yogyakarta, Indonesia</p>
-                  </div>
-                </div>
-                <div class="timeline-item">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-period">2020 — 2021</div>
-                    <h4 class="timeline-title">Glints Academy</h4>
-                    <span class="timeline-role"
-                      >Full-Stack Web Development Bootcamp</span
-                    >
-                    <p class="timeline-location">Remote</p>
-                  </div>
-                </div>
-                <div class="timeline-item">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-period">Certifications</div>
-                    <h4 class="timeline-title">
-                      Go &amp; Identity Access Engineering
-                    </h4>
-                    <span class="timeline-role"
-                      >Professional Certifications</span
-                    >
-                    <p class="timeline-location">Online</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Portfolio Section -->
-      <section id="work" class="section portfolio-section">
-        <div class="container">
-          <div class="section-header reveal-up" data-delay="0">
-            <span class="section-label">03 / Portfolio</span>
-            <h2 class="section-title">Featured Projects</h2>
-            <div class="section-line"></div>
-          </div>
-
-          <div class="portfolio-filters reveal-up" data-delay="100">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="web">Web</button>
-            <button class="filter-btn" data-filter="backend">Backend</button>
-          </div>
-
-          <div class="portfolio-grid">
-            <!-- Project 1 -->
-            <div
-              class="portfolio-card reveal-up"
-              data-delay="150"
-              data-category="backend"
-            >
-              <div
-                class="portfolio-card-visual"
-                style="
-                  --card-gradient: linear-gradient(
-                    135deg,
-                    #3a8f7f 0%,
-                    #1a5c52 100%
-                  );
-                "
-              >
-                <div class="portfolio-card-pattern"></div>
-                <div class="portfolio-card-icon">
-                  <i class="bi bi-server"></i>
-                </div>
-                <div class="portfolio-card-tag">Backend</div>
-              </div>
-              <div class="portfolio-card-body">
-                <h4 class="portfolio-card-title">Sayembara App</h4>
-                <p class="portfolio-card-desc">
-                  Contest management API with authentication, submissions, and
-                  admin dashboard.
-                </p>
-                <div class="portfolio-card-tags">
-                  <span>Node.js</span>
-                  <span>Express</span>
-                  <span>PostgreSQL</span>
-                  <span>JWT</span>
-                </div>
-                <div class="portfolio-card-links">
-                  <a
-                    href="https://sayembara-ga6.herokuapp.com/"
-                    target="_blank"
-                    rel="noopener"
-                    class="card-link"
-                  >
-                    <i class="bi bi-box-arrow-up-right"></i>
-                    Live Demo
-                  </a>
-                  <a
-                    href="https://github.com/kyomel"
-                    target="_blank"
-                    rel="noopener"
-                    class="card-link card-link-ghost"
-                  >
-                    <i class="bi bi-github"></i> Code
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Project 2 -->
-            <div
-              class="portfolio-card reveal-up"
-              data-delay="250"
-              data-category="web"
-            >
-              <div
-                class="portfolio-card-visual"
-                style="
-                  --card-gradient: linear-gradient(
-                    135deg,
-                    #4ecdc4 0%,
-                    #2a9d8f 100%
-                  );
-                "
-              >
-                <div class="portfolio-card-pattern"></div>
-                <div class="portfolio-card-icon">
-                  <i class="bi bi-globe"></i>
-                </div>
-                <div class="portfolio-card-tag">Web</div>
-              </div>
-              <div class="portfolio-card-body">
-                <h4 class="portfolio-card-title">
-                  More Projects Coming Soon
-                </h4>
-                <p class="portfolio-card-desc">
-                  New projects in the pipeline. Check back or follow on
-                  GitHub for updates.
-                </p>
-                <div class="portfolio-card-tags">
-                  <span>React</span>
-                  <span>Go</span>
-                  <span>Web3</span>
-                </div>
-                <div class="portfolio-card-links">
-                  <a
-                    href="https://github.com/kyomel"
-                    target="_blank"
-                    rel="noopener"
-                    class="card-link"
-                  >
-                    <i class="bi bi-github"></i> See GitHub
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Project 3 -->
-            <div
-              class="portfolio-card reveal-up"
-              data-delay="350"
-              data-category="web"
-            >
-              <div
-                class="portfolio-card-visual"
-                style="
-                  --card-gradient: linear-gradient(
-                    135deg,
-                    #2a9d8f 0%,
-                    #1e1e2e 100%
-                  );
-                "
-              >
-                <div class="portfolio-card-pattern"></div>
-                <div class="portfolio-card-icon">
-                  <i class="bi bi-lightning-charge"></i>
-                </div>
-                <div class="portfolio-card-tag">Coming Soon</div>
-              </div>
-              <div class="portfolio-card-body">
-                <h4 class="portfolio-card-title">AI / Web3 Project</h4>
-                <p class="portfolio-card-desc">
-                  Exploring the intersection of AI and Web3 technologies.
-                  Currently in development phase.
-                </p>
-                <div class="portfolio-card-tags">
-                  <span>AI</span>
-                  <span>Web3</span>
-                  <span>Rust</span>
-                </div>
-                <div class="portfolio-card-links">
-                  <a href="#contact" class="card-link card-link-ghost js-scroll">
-                    <i class="bi bi-envelope"></i> Get Notified
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contact Section -->
-      <section id="contact" class="section contact-section">
-        <div class="container">
-          <div class="section-header reveal-up" data-delay="0">
-            <span class="section-label">04 / Contact</span>
-            <h2 class="section-title">Get In Touch</h2>
-            <div class="section-line"></div>
-          </div>
-
-          <div class="contact-wrapper">
-            <div class="contact-info reveal-left" data-delay="100">
-              <h3 class="contact-heading">Let's build something together.</h3>
-              <p class="contact-subtext">
-                I'm always open to discussing new projects, creative ideas, or
-                opportunities to be part of your visions.
-              </p>
-
-              <div class="contact-items">
-                <a
-                  href="mailto:michaellapandio04@gmail.com"
-                  class="contact-item"
-                >
-                  <div class="contact-item-icon">
-                    <i class="bi bi-envelope-fill"></i>
-                  </div>
-                  <div class="contact-item-text">
-                    <span class="contact-item-label">Email</span>
-                    <span class="contact-item-value"
-                      >michaellapandio04@gmail.com</span
-                    >
-                  </div>
-                </a>
-
-                <div class="contact-item">
-                  <div class="contact-item-icon">
-                    <i class="bi bi-geo-alt-fill"></i>
-                  </div>
-                  <div class="contact-item-text">
-                    <span class="contact-item-label">Location</span>
-                    <span class="contact-item-value"
-                      >Yogyakarta, Indonesia</span
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="contact-socials">
-                <a
-                  href="https://www.linkedin.com/in/michael-stevan-lapandio/"
-                  target="_blank"
-                  rel="noopener"
-                  class="social-btn"
-                  aria-label="LinkedIn"
-                >
-                  <i class="bi bi-linkedin"></i>
-                </a>
-                <a
-                  href="https://github.com/kyomel"
-                  target="_blank"
-                  rel="noopener"
-                  class="social-btn"
-                  aria-label="GitHub"
-                >
-                  <i class="bi bi-github"></i>
-                </a>
-                <a
-                  href="mailto:michaellapandio04@gmail.com"
-                  class="social-btn"
-                  aria-label="Email"
-                >
-                  <i class="bi bi-envelope"></i>
-                </a>
-              </div>
-            </div>
-
-            <div class="contact-form-wrap reveal-right" data-delay="200">
-              <form class="contact-form" id="contactForm" novalidate>
-                <div class="form-row">
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      required
-                      placeholder=" "
-                    />
-                    <label for="name">Your Name</label>
-                    <span class="form-line"></span>
-                  </div>
-                  <div class="form-group">
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required
-                      placeholder=" "
-                    />
-                    <label for="email">Your Email</label>
-                    <span class="form-line"></span>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    required
-                    placeholder=" "
-                  />
-                  <label for="subject">Subject</label>
-                  <span class="form-line"></span>
-                </div>
-                <div class="form-group">
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows="5"
-                    required
-                    placeholder=" "
-                  ></textarea>
-                  <label for="message">Your Message</label>
-                  <span class="form-line"></span>
-                </div>
-                <button type="submit" class="btn btn-submit">
-                  <span class="btn-submit-text">Send Message</span>
-                  <i class="bi bi-send-fill"></i>
-                </button>
-                <div class="form-feedback" id="formFeedback"></div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer-marquee" aria-hidden="true">
-        <div class="footer-marquee-track">
-          <span class="footer-marquee-group">
-            <span>$ build</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>$ ship</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>$ iterate</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>$ repeat</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>&lt;kyomel/&gt;</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>software engineer</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>yogyakarta</span>
-            <span class="footer-marquee-sep">·</span>
-          </span>
-          <span class="footer-marquee-group" aria-hidden="true">
-            <span>$ build</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>$ ship</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>$ iterate</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>$ repeat</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>&lt;kyomel/&gt;</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>software engineer</span>
-            <span class="footer-marquee-sep">·</span>
-            <span>yogyakarta</span>
-            <span class="footer-marquee-sep">·</span>
-          </span>
-        </div>
-      </div>
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-brand">
-            <span class="brand-bracket">&lt;</span>kyomel<span
-              class="brand-bracket"
-              >/&gt;</span
-            >
-          </div>
-          <p class="footer-text">
-            Designed &amp; built with care by Michael Stevan Lapandio
-          </p>
-          <p class="footer-copy">
-            &copy; 2026 Michael Stevan Lapandio. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
-
-    <a href="#" class="back-to-top" id="backToTop" aria-label="Back to top">
-      <i class="bi bi-arrow-up"></i>
-    </a>
-    <div id="preloader"><div class="preloader-spinner"></div></div>
+    </noscript>
 
     <script src="assets/js/main.js"></script>
   </body>
