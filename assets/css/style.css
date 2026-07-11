@@ -53,6 +53,16 @@
   --safe-b: env(safe-area-inset-bottom, 0px);
   --safe-l: env(safe-area-inset-left, 0px);
   --vvh: 100dvh;
+
+  --motion-micro: 80ms;
+  --motion-fast: 140ms;
+  --motion-normal: 220ms;
+  --motion-cursor: 1200ms;
+  --motion-sweep: 18s;
+  --motion-power: 620ms;
+  --ease-terminal: steps(1);
+  --ease-crt: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="light"] {
@@ -263,17 +273,36 @@ input {
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   isolation: isolate;
-  animation: terminal-in 0.45s ease both;
+  animation: terminal-in var(--motion-power) var(--ease-crt) both;
 }
 
 @keyframes terminal-in {
-  from {
+  0% {
     opacity: 0;
-    transform: translateY(8px) scale(0.985);
+    transform: scaleY(0.008) scaleX(0.3);
+    filter: brightness(8) blur(6px) contrast(1.6);
   }
-  to {
+  20% {
+    opacity: 1;
+    transform: scaleY(0.02) scaleX(1.25);
+    filter: brightness(4.5) blur(1.8px) contrast(1.3);
+  }
+  42% {
+    transform: scaleY(1.08) scaleX(0.96);
+    filter: brightness(1.4) blur(0.5px);
+  }
+  68% {
+    transform: scaleY(0.97) scaleX(1.02);
+    filter: brightness(1.12) blur(0.15px);
+  }
+  85% {
+    transform: scaleY(1.01) scaleX(0.995);
+    filter: brightness(1.03);
+  }
+  100% {
     opacity: 1;
     transform: none;
+    filter: none;
   }
 }
 
@@ -406,13 +435,18 @@ input {
 }
 
 .term-nav-link.is-pulse {
-  animation: chip-pulse 0.35s ease;
+  animation: term-flash var(--motion-micro) steps(1) 3 alternate;
 }
 
-@keyframes chip-pulse {
-  0% { transform: scale(1); }
-  40% { transform: scale(0.94); }
-  100% { transform: scale(1); }
+@keyframes term-flash {
+  0% {
+    background: var(--surface-2);
+    color: var(--muted);
+  }
+  100% {
+    background: var(--fg);
+    color: var(--bg);
+  }
 }
 
 /* ---------- Body / output ---------- */
@@ -473,25 +507,28 @@ input {
   word-break: break-all;
 }
 
-/* Line enter animation */
+/* Phosphor reveal — real VT100 is instant bloom, no slide */
 .line.is-enter,
 .echo-line.is-enter,
 .ascii-art.is-enter,
 .kv.is-enter,
-.tag.is-enter,
 .project-item.is-enter,
 .help-grid.is-enter {
-  animation: line-in 0.22s ease both;
+  animation: phosphor-in var(--motion-fast) var(--ease-crt) both;
 }
 
-@keyframes line-in {
-  from {
+@keyframes phosphor-in {
+  0% {
     opacity: 0;
-    transform: translateY(4px);
+    filter: brightness(1.9) blur(0.5px);
   }
-  to {
+  25% {
     opacity: 1;
-    transform: none;
+    filter: brightness(1.28) blur(0.15px);
+  }
+  100% {
+    opacity: 1;
+    filter: none;
   }
 }
 
@@ -693,7 +730,14 @@ input {
 }
 
 @keyframes cursor-blink {
-  50% { opacity: 0; }
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 
 /* ---------- Mobile controls ---------- */
@@ -811,22 +855,26 @@ input {
 
 @media (prefers-reduced-motion: no-preference) {
   .crt-sweep {
-    animation: sweep 11s linear infinite;
+    animation: sweep var(--motion-sweep) var(--ease-crt) infinite;
   }
 }
 
 @keyframes sweep {
   0%,
-  72% {
+  84% {
     opacity: 0;
-    transform: translateY(-100px);
+    transform: translateY(-120px);
   }
-  78% {
-    opacity: 0.55;
+  88% {
+    opacity: 0.18;
   }
+  90% {
+    opacity: 0.06;
+  }
+  93%,
   100% {
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateY(115%);
   }
 }
 
@@ -835,34 +883,62 @@ input {
   text-shadow: 0 0 1.5px var(--glow-soft);
 }
 
-/* Power-on flash after boot */
 .terminal-app.power-on {
-  animation: power-on 0.55s ease both;
+  animation: power-on var(--motion-power) var(--ease-crt) both;
 }
 
 @keyframes power-on {
   0% {
-    filter: brightness(1.8) contrast(1.1);
-    opacity: 0.4;
+    filter: brightness(2.6) blur(1px) contrast(1.2);
+    opacity: 0.55;
+    transform: scaleY(0.93);
   }
-  40% {
-    filter: brightness(1.15);
+  22% {
+    filter: brightness(1.45) blur(0.4px);
     opacity: 1;
+    transform: scaleY(1.06);
+  }
+  42% {
+    filter: brightness(0.94);
+    transform: scaleY(0.985);
+  }
+  68% {
+    filter: brightness(1.06);
+    transform: scaleY(1.01);
   }
   100% {
     filter: none;
     opacity: 1;
+    transform: none;
   }
 }
 
-/* Theme switch flash */
 .terminal-app.theme-flash {
-  animation: theme-flash 0.28s ease;
+  animation: theme-flash var(--motion-micro) steps(1) 3 alternate;
 }
 
 @keyframes theme-flash {
-  0% { filter: brightness(1.25); }
-  100% { filter: none; }
+  0% {
+    filter: brightness(1.85) contrast(1.12);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-theme="dark"] .ascii-art {
+    animation: phosphor-breathe 4.2s var(--ease-crt) infinite alternate;
+  }
+}
+
+@keyframes phosphor-breathe {
+  0% {
+    text-shadow: 0 0 5px var(--glow), 0 0 14px var(--glow-soft);
+  }
+  100% {
+    text-shadow: 0 0 7px var(--glow), 0 0 20px var(--glow-soft);
+  }
 }
 
 /* ---------- Noscript ---------- */
