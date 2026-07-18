@@ -175,7 +175,7 @@
 		banner: "Show ASCII banner",
 		ls: "List pseudo files",
 		cat: "Read a file (cat about.txt)",
-		theme: "theme [dark|light|toggle]",
+		theme: "theme [name|list|next] — color themes",
 		crt: "crt [on|off|toggle]",
 		history: "Command history",
 		clear: "Clear the screen",
@@ -187,6 +187,19 @@
 	};
 
 	/* ---------- Theme ---------- */
+	const THEMES = {
+		dark: { label: "phosphor green", meta: "#020402" },
+		light: { label: "paper console", meta: "#f4f1e8" },
+		amber: { label: "amber phosphor (VT220)", meta: "#0b0700" },
+		dracula: { label: "dracula", meta: "#1e1f29" },
+		gruvbox: { label: "gruvbox retro", meta: "#1d2021" },
+		nord: { label: "nord arctic", meta: "#242933" },
+		solarized: { label: "solarized dark", meta: "#001e26" },
+		tokyo: { label: "tokyo night", meta: "#16161e" },
+		synthwave: { label: "synthwave '84", meta: "#1d1829" },
+	};
+	const THEME_ORDER = Object.keys(THEMES);
+
 	function getStored(key) {
 		try {
 			return localStorage.getItem(key);
@@ -205,17 +218,18 @@
 
 	function updateThemeColor(theme) {
 		const metas = document.querySelectorAll('meta[name="theme-color"]');
-		const color = theme === "light" ? "#f4f1e8" : "#020402";
+		const color = (THEMES[theme] || THEMES.dark).meta;
 		metas.forEach((m) => m.setAttribute("content", color));
 	}
 
 	function applyTheme(theme, flash) {
+		if (!THEMES[theme]) theme = "dark";
 		root.setAttribute("data-theme", theme);
 		if (themeLabel) themeLabel.textContent = theme;
 		if (themeToggle) {
 			themeToggle.setAttribute(
 				"aria-label",
-				theme === "dark" ? "Switch to light mode" : "Switch to dark mode",
+				`Theme: ${THEMES[theme].label}. Click for next theme.`,
 			);
 		}
 		updateThemeColor(theme);
@@ -228,7 +242,7 @@
 
 	function initTheme() {
 		const stored = getStored("portfolio-theme");
-		if (stored === "light" || stored === "dark") {
+		if (stored && THEMES[stored]) {
 			applyTheme(stored, false);
 			return;
 		}
@@ -244,7 +258,9 @@
 	}
 
 	function toggleTheme() {
-		const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+		const current = root.getAttribute("data-theme") || "dark";
+		const next =
+			THEME_ORDER[(THEME_ORDER.indexOf(current) + 1) % THEME_ORDER.length];
 		setTheme(next);
 		return next;
 	}
@@ -416,6 +432,43 @@
 		}
 	}
 
+	/* ---------- Scramble / decode reveal ---------- */
+	const SCRAMBLE_GLYPHS = "!<>-_\\/[]{}=+*^?#";
+
+	function printScramble(text, className = "line bright") {
+		if (reduceMotion) return printLine(text, className);
+
+		const line = el("div", className);
+		outputEl.appendChild(line);
+		scrollToBottom();
+
+		const chars = [...text];
+		const settle = chars.map(
+			(_, i) => 6 + i * 1.6 + Math.random() * 6,
+		);
+		let frame = 0;
+
+		function tick() {
+			if (!line.isConnected) return;
+			frame++;
+			let out = "";
+			let done = true;
+			for (let i = 0; i < chars.length; i++) {
+				const ch = chars[i];
+				if (ch === " " || frame >= settle[i]) {
+					out += ch;
+					continue;
+				}
+				done = false;
+				out += SCRAMBLE_GLYPHS[(Math.random() * SCRAMBLE_GLYPHS.length) | 0];
+			}
+			line.textContent = out;
+			if (!done) requestAnimationFrame(tick);
+		}
+		requestAnimationFrame(tick);
+		return line;
+	}
+
 	/* ---------- Commands ---------- */
 	function cmdHelp() {
 		printLine("Available commands:", "line bright");
@@ -437,7 +490,7 @@
 	}
 
 	function cmdAbout() {
-		printLine("// ABOUT", "line bright");
+		printScramble("// ABOUT");
 		printBlank();
 		printKV([
 			["name", PROFILE.name],
@@ -456,7 +509,7 @@
 	}
 
 	function cmdSkills() {
-		printLine("// TECH STACK", "line bright");
+		printScramble("// TECH STACK");
 		printBlank();
 		const row = el("div", "tag-row");
 		SKILLS.forEach((s, i) => {
@@ -473,7 +526,7 @@
 	}
 
 	function cmdExperience() {
-		printLine("// EXPERIENCE", "line bright");
+		printScramble("// EXPERIENCE");
 		printBlank();
 		EXPERIENCE.forEach((job, i) => {
 			const box = el("div", "project-item");
@@ -490,7 +543,7 @@
 	}
 
 	function cmdEducation() {
-		printLine("// EDUCATION", "line bright");
+		printScramble("// EDUCATION");
 		printBlank();
 		EDUCATION.forEach((ed, i) => {
 			const box = el("div", "project-item");
@@ -507,7 +560,7 @@
 	}
 
 	function cmdProjects() {
-		printLine("// PROJECTS", "line bright");
+		printScramble("// PROJECTS");
 		printBlank();
 		printLine("total " + PROJECTS.length, "line muted");
 		printBlank();
@@ -538,7 +591,7 @@
 	}
 
 	function cmdContact() {
-		printLine("// CONTACT", "line bright");
+		printScramble("// CONTACT");
 		printBlank();
 		printLine("Let's build something together.");
 		printBlank();
@@ -651,18 +704,33 @@
 	}
 
 	function cmdTheme(args) {
-		const arg = (args[0] || "toggle").toLowerCase();
-		if (arg === "dark" || arg === "light") {
-			setTheme(arg);
-			printLine(`theme set to ${arg}`, "line ok");
+		const arg = (args[0] || "list").toLowerCase();
+		const current = root.getAttribute("data-theme") || "dark";
+		if (arg === "list" || arg === "") {
+			printScramble("// COLOR THEMES");
+			printBlank();
+			THEME_ORDER.forEach((name) => {
+				const marker = name === current ? "●" : "○";
+				printLine(`${marker} ${name.padEnd(10)} ${THEMES[name].label}`,
+					name === current ? "line ok" : "line",
+				);
+			});
+			printBlank();
+			printLine("usage: theme <name> · theme next", "line muted");
 			return;
 		}
-		if (arg === "toggle" || arg === "") {
+		if (arg === "next" || arg === "toggle") {
 			const next = toggleTheme();
-			printLine(`theme set to ${next}`, "line ok");
+			printLine(`theme set to ${next} — ${THEMES[next].label}`, "line ok");
 			return;
 		}
-		printLine("usage: theme [dark|light|toggle]", "line err");
+		if (THEMES[arg]) {
+			setTheme(arg);
+			printLine(`theme set to ${arg} — ${THEMES[arg].label}`, "line ok");
+			return;
+		}
+		printLine(`unknown theme: ${arg}`, "line err");
+		printLine(`available: ${THEME_ORDER.join(", ")}`, "line muted");
 	}
 
 	function cmdCrt(args) {
@@ -905,7 +973,7 @@
 			"line hint-line",
 		);
 		printLine(
-			"Theme: phosphor green (dark) · paper console (light)",
+			`${THEME_ORDER.length} color themes — run \`theme list\``, 
 			"line muted",
 		);
 		printBlank();
